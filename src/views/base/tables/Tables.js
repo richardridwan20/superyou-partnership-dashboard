@@ -28,7 +28,8 @@ const Tables = () => {
 
   useEffect(() => {
     const axios = require("axios");
-    const url = "http://127.0.0.1:8004/api/v1/fetch";
+    const apiUrl = process.env.REACT_APP_PARTNERSHIP_API_URL;
+    const url = apiUrl+"/fetch";
     axios
       .get(url)
       .then((res) => {
