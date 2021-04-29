@@ -7,7 +7,6 @@ COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
 
 RUN npm install --production
-RUN npm run build
 
 COPY .env.example /app/.env.example
 COPY . /app
