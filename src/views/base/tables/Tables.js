@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   CBadge,
   CCard,
@@ -21,13 +21,28 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-const fields = ['name','registered', 'role', 'status']
+const fields = ['id', 'product_slug', 'product_code', 'product_plan_code', 'holder_name', 'holder_dob']
 
 const Tables = () => {
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    const axios = require("axios");
+    const url = "http://127.0.0.1:8004/api/v1/fetch";
+    axios
+      .get(url)
+      .then((res) => {
+        setTransactions(res.data);
+      })
+      .catch((error) => {
+        console.error("Error", error);
+      });
+  }, []); 
+
   return (
     <>
       <CRow>
-        <CCol xs="12" lg="6">
+        <CCol xs="12" lg="12">
           <CCard>
             <CCardHeader>
               Simple Table
@@ -35,7 +50,7 @@ const Tables = () => {
             </CCardHeader>
             <CCardBody>
             <CDataTable
-              items={usersData}
+              items={transactions}
               fields={fields}
               itemsPerPage={5}
               pagination
@@ -55,14 +70,14 @@ const Tables = () => {
           </CCard>
         </CCol>
 
-        <CCol xs="12" lg="6">
+        {/* <CCol xs="12" lg="6">
           <CCard>
             <CCardHeader>
               Striped Table
             </CCardHeader>
             <CCardBody>
             <CDataTable
-              items={usersData}
+              items={transactions}
               fields={fields}
               striped
               itemsPerPage={5}
@@ -140,7 +155,7 @@ const Tables = () => {
             />
             </CCardBody>
           </CCard>
-        </CCol>
+        </CCol> */}
 
       </CRow>
 
