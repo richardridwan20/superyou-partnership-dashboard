@@ -7,4 +7,5 @@ services:
     volumes:
      - .:/starter
      - /starter/node_modules
+    stdin_open: true
      
