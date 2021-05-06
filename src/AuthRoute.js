@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { isAuthenticated } from './Auth'
+import Auth from './Auth'
 
 export const UnauthenticatedRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
-    !isAuthenticated()
+    !Auth.isAuthenticated()
       ? <Component {...props} />
       : <Redirect to='/' />
   )} />
@@ -12,7 +12,7 @@ export const UnauthenticatedRoute = ({ component: Component, ...rest }) => (
 
 export const AuthenticatedRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
-    isAuthenticated()
+    Auth.isAuthenticated()
       ? <Component {...props} />
       : <Redirect to='/login' />
   )} />
