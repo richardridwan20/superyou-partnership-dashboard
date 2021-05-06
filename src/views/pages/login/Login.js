@@ -43,11 +43,12 @@ const Login = (props) => {
   const handleLogin = () => {
     setError(null);
     setLoading(true);
+    const apiUrl = process.env.REACT_APP_PARTNERSHIP_API_URL+'/users/token';
     const formData = new FormData();
     formData.append('username', username.value);
     formData.append('password', password.value);
     axios({
-      url: 'http://127.0.0.1:8004/api/v1/users/token',
+      url: apiUrl,
       method: 'POST',
       data: formData,
       headers: {
@@ -60,7 +61,6 @@ const Login = (props) => {
       Auth.login();
       props.history.push('/dashboard');
     }).catch(error => {
-      console.log(error.response.data);
       setLoading(false);
       if (error.response.status === 401) setError(error.response.data.detail);
       else setError("Something went wrong. Please try again later.");
