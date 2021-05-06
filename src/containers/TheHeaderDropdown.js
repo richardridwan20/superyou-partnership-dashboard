@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import {
   CBadge,
   CDropdown,
@@ -8,8 +9,20 @@ import {
   CImg
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { getUser, removeUserSession } from '../utils/Common';
+import Auth from '../Auth';
+import { withRouter } from "react-router-dom";
 
-const TheHeaderDropdown = () => {
+
+const TheHeaderDropdown = (props) => {
+  const user = getUser();
+ 
+  const handleLogout = () => {
+    removeUserSession();
+    Auth.logout();
+    props.history.push('/dashboard');
+  }
+  
   return (
     <CDropdown
       inNav
@@ -84,9 +97,14 @@ const TheHeaderDropdown = () => {
           <CIcon name="cil-lock-locked" className="mfe-2" />
           Lock Account
         </CDropdownItem>
+        <CDropdownItem divider />
+        <CDropdownItem onClick={handleLogout}>
+          <CIcon name="cil-account-logout" className="mfe-2" />
+          Logout
+        </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
   )
 }
 
-export default TheHeaderDropdown
+export default withRouter(TheHeaderDropdown)
