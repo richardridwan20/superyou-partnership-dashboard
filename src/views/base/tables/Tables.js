@@ -56,12 +56,14 @@ const Tables = () => {
             <CDataTable
               items={transactions}
               fields={fields}
-              itemsPerPage={25}
+              itemsPerPage={5}
+              itemsPerPageSelect
               hover
               striped
               bordered
               size="lg"
               sorter
+              tableFilter
               responsive={true}
               pagination
               scopedSlots = {{
