@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import Auth from './Auth'
 
 export const UnauthenticatedRoute = ({ component: Component, ...rest }) => (
