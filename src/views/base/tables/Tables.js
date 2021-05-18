@@ -31,12 +31,6 @@ const Tables = () => {
   const options = {
     'external': true
   }
-  const noItemOptions = {
-    'noResults': 'No filter',
-    'noItems': 'No itemmm'
-  }
-  console.log(query);
-
   useEffect(() => {
     setLoading(true)
     TransactionService.getTransactions(currentPage, perPage, query)
