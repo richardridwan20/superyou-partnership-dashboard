@@ -6,8 +6,10 @@ const baseUrl = process.env.REACT_APP_PARTNERSHIP_API_URL;
 
 export default {
 
-    getTransactions: async function(){
-        const apiUrl = baseUrl+'/transactions'
+    getTransactions: async function(currentPage, perPage, query){
+        const order = (query['asc']) ? 'asc' : 'desc';
+        const sort = (query['column']) ? query['column'] : 'id';
+        const apiUrl = baseUrl+'/transactions/?page='+currentPage+'&limit='+perPage+'&order='+order+'&sort='+sort
         const token = await AuthService.getToken()
         try {
             const response = await axios({
@@ -18,6 +20,7 @@ export default {
                     Authorization: token.user_key,
                 }
             });
+            console.log(response.data)
             return response.data
         } catch (error) {
             throw(error);

@@ -6,7 +6,8 @@ import {
   CCardHeader,
   CCol,
   CDataTable,
-  CRow
+  CRow,
+  CPagination
 } from '@coreui/react'
 import TransactionService from '../../../services/TransactionService'
 
@@ -21,28 +22,33 @@ const getBadge = status => {
 }
 const fields = ['id', 'product_slug', 'product_code', 'product_plan_code', 'holder_name', 'holder_dob', 'holder_gender', 'holder_email', 'holder_mobile_number', 'insured_for', 'insured_name', 'insured_for', 'status']
 
-const loading = (
-  <div className="pt-3 text-center">
-    <div className="sk-spinner sk-spinner-pulse"></div>
-  </div>
-)
-
 const Tables = () => {
   const [transactions, setTransactions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [currentPage, setActivePage] = useState(1)
+  const [perPage, setPerPage] = useState(10)
+  const [query, setQuery] = useState('id')
+  const [loading, setLoading] = useState(true)
+  const options = {
+    'external': true
+  }
+  const noItemOptions = {
+    'noResults': 'No filter',
+    'noItems': 'No itemmm'
+  }
+  console.log(query);
 
   useEffect(() => {
-    setLoading(true);
-    TransactionService.getTransactions()
+    setLoading(true)
+    TransactionService.getTransactions(currentPage, perPage, query)
     .then((res) => {
+      setLoading(false)
       setTransactions(res)
-      setLoading(false);
     }).catch((error) => {
       setTransactions({})
       console.log(error)
     })
     
-  }, []); 
+  }, [currentPage, perPage, query]); 
 
   return (
     <>
@@ -55,17 +61,18 @@ const Tables = () => {
             <CCardBody>
             <CDataTable
               items={transactions}
+              loading={loading}
               fields={fields}
-              itemsPerPage={5}
-              itemsPerPageSelect
               hover
               striped
               bordered
               size="lg"
-              sorter
-              tableFilter
+              sorter={options}
+              itemsPerPageSelect
+              onColumnFilterChange={(q) => setQuery(q)}
+              onSorterValueChange={(q) => setQuery(q)}
+              onPaginationChange={(a) => setPerPage(a)}
               responsive={true}
-              pagination
               scopedSlots = {{
                 'status':
                   (item)=>(
@@ -77,6 +84,12 @@ const Tables = () => {
                   )
               }}
             />
+            <CPagination   
+              activePage={currentPage}
+              pages={24}
+              onActivePageChange={(i) => setActivePage(i)}
+            >
+            </CPagination>
             </CCardBody>
           </CCard>
         </CCol>
