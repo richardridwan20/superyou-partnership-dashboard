@@ -88,7 +88,7 @@ const Tables = () => {
             />
             <CPagination   
               activePage={currentPage}
-              pages={24}
+              pages={50}
               onActivePageChange={(i) => setActivePage(i)}
             >
             </CPagination>
