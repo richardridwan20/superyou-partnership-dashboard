@@ -13,16 +13,22 @@ import TransactionService from '../../../services/TransactionService'
 
 const getBadge = status => {
   switch (status) {
-    case 'Active': return 'success'
-    case 'Inactive': return 'secondary'
-    case 'Pending': return 'warning'
-    case 'Banned': return 'danger'
+    case 'awaiting-payment': return 'success'
+    case 'awaiting payment': return 'success'
+    case 'validation-failed': return 'warning'
+    case 'encryption-failed': return 'danger'
+    case 'encryption failed': return 'danger'
+    case 'request-encryption': return 'primary'
+    case 'request encryption': return 'primary'
     default: return 'primary'
   }
 }
+
+//Initialize fields for column in Datatable
 const fields = ['id', 'product_slug', 'product_code', 'product_plan_code', 'holder_name', 'holder_dob', 'holder_gender', 'holder_email', 'holder_mobile_number', 'insured_for', 'insured_name', 'insured_for', 'status']
 
 const Tables = () => {
+  //Initialize Value and useState
   const [transactions, setTransactions] = useState([]);
   const [currentPage, setActivePage] = useState(1)
   const [perPage, setPerPage] = useState(10)
@@ -31,6 +37,8 @@ const Tables = () => {
   const options = {
     'external': true
   }
+
+  //Fetch data through API using Axios in Service
   useEffect(() => {
     setLoading(true)
     TransactionService.getTransactions(currentPage, perPage, query)
