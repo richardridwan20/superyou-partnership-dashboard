@@ -20,7 +20,6 @@ export default {
                     Authorization: token.user_key,
                 }
             });
-            console.log(response.data)
             return response.data
         } catch (error) {
             throw(error);
