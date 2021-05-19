@@ -34,7 +34,6 @@ const TransactionDetail = ({match}) => {
   useEffect(() => {
     TransactionService.getTransactionById(id)
     .then((res) => {
-      console.log(transactions);
       setTransactions(res)
     }).catch((error) => {
       setTransactions({})
