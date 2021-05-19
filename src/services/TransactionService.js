@@ -38,7 +38,6 @@ export default {
                     Authorization: token.user_key,
                 }
             });
-            console.log(response.data.transaction)
             return response.data.transaction
         } catch (error) {
             throw(error);
