@@ -5,9 +5,11 @@ import {
   CCardHeader,
   CCol,
   CRow,
-  CBadge
+  CBadge,
+  CButton
 } from '@coreui/react'
 import TransactionService from '../../services/TransactionService'
+import CIcon from '@coreui/icons-react'
 
 const getBadge = status => {
   switch (status) {
@@ -74,6 +76,9 @@ const TransactionDetail = ({match}) => {
                         <CCol sm="12" sm="6" className="text-center">
                           <p className="text-muted">POLICY NUMBER</p>
                           <p>{transactions.policy_number ? transactions.policy_number : '-'}</p>
+                          <CButton color="success" variant='outline' href="javascript:void(0)" disabled>
+                            <CIcon name="cil-cloud-download" /> Download
+                          </CButton>
                         </CCol>
                         <CCol sm="12" sm="6" className="text-center">
                           <p className="text-muted">START DATE</p>
