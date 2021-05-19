@@ -24,6 +24,25 @@ export default {
         } catch (error) {
             throw(error);
         }
+    },
+
+    getTransactionById: async function(id){
+        const apiUrl = baseUrl+'/transactions/'+id
+        const token = await AuthService.getToken()
+        try {
+            const response = await axios({
+                url: apiUrl,
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: token.user_key,
+                }
+            });
+            console.log(response.data.transaction)
+            return response.data.transaction
+        } catch (error) {
+            throw(error);
+        }
     }
 
 }
