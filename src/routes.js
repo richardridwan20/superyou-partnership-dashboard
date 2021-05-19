@@ -3,6 +3,7 @@ import React from 'react';
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
 const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 const TransactionsTable = React.lazy(() => import('./views/base/tables/Tables'));
+const TransactionDetail = React.lazy(() => import('./views/pages/TransactionDetail'));
 
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/base/cards/Cards'));
@@ -42,7 +43,8 @@ const User = React.lazy(() => import('./views/users/User'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/transactions', name: 'Transactions', component: TransactionsTable },
+  { path: '/transactions', exact: true, name: 'Transactions', component: TransactionsTable },
+  { path: '/transactions/:id', exact: true, name: 'Transaction Detail', component: TransactionDetail },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },

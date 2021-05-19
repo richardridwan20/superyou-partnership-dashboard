@@ -7,8 +7,11 @@ import {
   CCol,
   CDataTable,
   CRow,
-  CPagination
+  CPagination,
+  CButton,
+  CLink
 } from '@coreui/react'
+import { useHistory } from 'react-router-dom'
 import TransactionService from '../../../services/TransactionService'
 
 const getBadge = status => {
@@ -25,7 +28,7 @@ const getBadge = status => {
 }
 
 //Initialize fields for column in Datatable
-const fields = ['id', 'product_slug', 'product_code', 'product_plan_code', 'holder_name', 'holder_dob', 'holder_gender', 'holder_email', 'holder_mobile_number', 'insured_for', 'insured_name', 'insured_for', 'status']
+const fields = ['id', 'product_slug', 'product_code', 'product_plan_code', 'holder_name', 'holder_dob', 'holder_gender', 'holder_email', 'holder_mobile_number', 'insured_name', 'insured_for', 'status']
 
 const Tables = () => {
   //Initialize Value and useState
@@ -37,6 +40,7 @@ const Tables = () => {
   const options = {
     'external': true
   }
+  const history = useHistory()
 
   //Fetch data through API using Axios in Service
   useEffect(() => {
@@ -75,6 +79,8 @@ const Tables = () => {
               onSorterValueChange={(q) => setQuery(q)}
               onPaginationChange={(a) => setPerPage(a)}
               responsive={true}
+              clickableRows
+              onRowClick={(item) => history.push(`/transactions/${item.id}`)}
               scopedSlots = {{
                 'status':
                   (item)=>(
