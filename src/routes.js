@@ -4,6 +4,7 @@ const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster')
 const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 const TransactionsTable = React.lazy(() => import('./views/base/tables/Tables'));
 const TransactionDetail = React.lazy(() => import('./views/pages/TransactionDetail'));
+const Upload = React.lazy(() => import('./views/pages/Upload'));
 
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/base/cards/Cards'));
@@ -45,6 +46,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/transactions', exact: true, name: 'Transactions', component: TransactionsTable },
   { path: '/transactions/:id', exact: true, name: 'Transaction Detail', component: TransactionDetail },
+  { path: '/upload', exact: true, name: 'Upload', component: Upload },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },

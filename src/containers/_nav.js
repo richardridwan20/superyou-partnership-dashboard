@@ -23,6 +23,16 @@ const _nav =  [
     }
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'Upload',
+    to: '/upload',
+    icon: <CIcon name="cil-cloud-upload" customClasses="c-sidebar-nav-icon"/>,
+    badge: {
+      color: 'info',
+      text: 'NEW',
+    }
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },
