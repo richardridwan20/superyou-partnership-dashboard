@@ -10,8 +10,6 @@ export default {
         var formData = new FormData();
         formData.append("excel", file);
 
-        console.log(formData);
-
         const token = await AuthService.getToken()
         const apiUrl = baseUrl+'/uploads/upload/'+token.user_key
 
@@ -24,8 +22,7 @@ export default {
                     Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',
                     Authorization: token.user_key,
-                },
-                // onUploadProgress
+                }
             });
             return response.data
         } catch (error) {
