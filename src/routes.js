@@ -5,7 +5,9 @@ const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 const TransactionsTable = React.lazy(() => import('./views/base/tables/Tables'));
 const PartnersTable = React.lazy(() => import('./views/pages/PartnersTable'));
 const TransactionDetail = React.lazy(() => import('./views/pages/TransactionDetail'));
+const PartnerDetail = React.lazy(() => import('./views/pages/PartnerDetail'));
 const Upload = React.lazy(() => import('./views/pages/Upload'));
+const UserDetail = React.lazy(() => import('./views/pages/UserDetail'));
 
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/base/cards/Cards'));
@@ -49,6 +51,8 @@ const routes = [
   { path: '/transactions/:id', exact: true, name: 'Transaction Detail', component: TransactionDetail },
   { path: '/upload', exact: true, name: 'Upload', component: Upload },
   { path: '/partners', exact: true, name: 'Partners', component: PartnersTable },
+  { path: '/partners/:id', exact: true, name: 'Partner Detail', component: PartnerDetail },
+  { path: '/profile/:id', exact: true, name: 'User Detail', component: UserDetail },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
@@ -86,7 +90,6 @@ const routes = [
   { path: '/notifications/toaster', name: 'Toaster', component: Toaster },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User }
 ];
 
 export default routes;
