@@ -22,6 +22,10 @@ const TheHeaderDropdown = (props) => {
     Auth.logout();
     props.history.push('/dashboard');
   }
+
+  const handleProfile = () => {
+    props.history.push('/profile/'+user);
+  }
   
   return (
     <CDropdown
@@ -75,7 +79,7 @@ const TheHeaderDropdown = (props) => {
         >
           <strong>Settings</strong>
         </CDropdownItem>
-        <CDropdownItem>
+        <CDropdownItem onClick={handleProfile}>
           <CIcon name="cil-user" className="mfe-2" />Profile
         </CDropdownItem>
         <CDropdownItem>
