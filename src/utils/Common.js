@@ -1,8 +1,6 @@
 // return the user data from the session storage
 export const getUser = () => {
-  const userStr = sessionStorage.getItem('user_key');
-  if (userStr) return JSON.parse(userStr);
-  else return null;
+  return sessionStorage.getItem('user_key') || null;
 }
  
 // return the token from the session storage
@@ -19,5 +17,5 @@ export const removeUserSession = () => {
 // set the access_token and user_key from the session storage
 export const setUserSession = (access_token, user_key) => {
   sessionStorage.setItem('access_token', access_token);
-  sessionStorage.setItem('user_key', JSON.stringify(user_key));
+  sessionStorage.setItem('user_key', user_key);
 }
