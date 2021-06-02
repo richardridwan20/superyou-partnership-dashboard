@@ -11,6 +11,7 @@ import {
   CButton,
   CLink
 } from '@coreui/react'
+import { useHistory } from 'react-router-dom'
 import PartnerService from '../../services/PartnerService'
 
 const getBadge = status => {
@@ -39,6 +40,7 @@ const PartnersTable = () => {
   const options = {
     'external': true
   }
+  const history = useHistory()
 
   //Fetch data through API using Axios in Service
   useEffect(() => {
@@ -76,6 +78,7 @@ const PartnersTable = () => {
               onColumnFilterChange={(q) => setQuery(q)}
               onSorterValueChange={(q) => setQuery(q)}
               onPaginationChange={(a) => setPerPage(a)}
+              onRowClick={(item) => history.push(`/partners/${item.id}`)}
               responsive={true}
               clickableRows
             />
