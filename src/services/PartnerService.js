@@ -42,6 +42,45 @@ export default {
         } catch (error) {
             throw(error);
         }
+    },
+
+    updatePartnerById: async function(partner){
+        // console.log(partner);
+
+        // var json = {
+        //     name: 'Sequis',
+        //     company_name: 'PT Asuransi Jiwa Sequis Life 222',
+        //     email: 'sequis@email.com',
+        //     commission: '0',
+        //     address: 'Jalan Jenderal Sudirman no 84',
+        //     is_active: 'true',
+        //     branch_name: '',
+        //     branch_code: '',
+        //     agent_name: '',
+        //     agent_code: '',
+        //     desktop_banner_url: '',
+        //     mobile_banner_url: '',
+        //     callback_method: 'GET',
+        //     callback_url: 'https://reqres.in/api/products/3'
+        // };
+        
+        const apiUrl = baseUrl+'/partners/fd76a03a-848e-4434-989c-17331f951095'
+        const token = await AuthService.getToken()
+        try {
+            const response = await axios({
+                url: apiUrl,
+                method: 'PUT',
+                data: partner,
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: token.user_key,
+                }
+            });
+            return response.data
+        } catch (error) {
+            throw(error);
+        }
     }
 
 }
