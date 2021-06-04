@@ -1,22 +1,17 @@
-import React, {useEffect, useState, useLayoutEffect} from 'react'
+import React, {useState, useLayoutEffect} from 'react'
 import {
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
   CRow,
-  CLink,
   CInput,
-  CWidgetBrand,
-  CCardGroup,
-  CWidgetProgressIcon,
-  CProgress,
-  CWidgetIcon,
   CCallout,
   CBadge,
   CButton,
   CForm,
-  CTextarea
+  CTextarea,
+  CButtonToolbar
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import UserService from '../../services/UserService'
@@ -33,10 +28,6 @@ const getIsActive = is_active => {
     default: return 'success'
   }
 }
-
-const formStyles = {
-  border: "0px"
-};
 
 const UserDetail = ({match}) => {
   const [id, setId] = useState(match.params.id);
@@ -65,8 +56,7 @@ const UserDetail = ({match}) => {
   }, [updated]); 
 
   const handleSubmit = () => {
-    // console.log(JSON.stringify(partner));
-    PartnerService.updatePartnerById(partner)
+    PartnerService.updatePartnerById(partners.id,partner)
     .then((res) => {
       MySwal.fire({
         title: <p>Success!</p>,
@@ -165,24 +155,25 @@ const UserDetail = ({match}) => {
             <CCardBody>
               <CForm action="#" className="form-horizontal">
                 <CRow>
-                  <CCol xs="12" sm="8" className="">
+                  <CCol xs="12" sm="9" className="">
                     <p className="text-muted lead">Partner Info</p>
                   </CCol>
-                  <CCol xs="12" sm="2">
-                    <CButton type="button" size="md" color="info" onClick={ e => setEdit(true) }>
-                      <CIcon
-                        name="cil-pencil"
-                      /> Edit
-                    </CButton>
-                  </CCol>
-                  <CCol xs="12" sm="2">
-                    <CButton type="button" size="md" color="info" onClick={ handleSubmit } disabled={!typed}>
-                      <CIcon
-                        name="cil-save"
-                      /> Save Changes
-                    </CButton>
+                  <CCol xs="12" sm="3">
+                    <CButtonToolbar justify="between">
+                      <CButton type="button" size="sm" color="info"  onClick={ e => setEdit(true) }>
+                        <CIcon
+                          name="cil-pencil"
+                        /> Edit
+                      </CButton>
+                      <CButton type="button" size="sm" color="secondary" onClick={ handleSubmit } disabled={!typed}>
+                        <CIcon
+                          name="cil-save"
+                        /> Save Changes
+                      </CButton>
+                    </CButtonToolbar>
                   </CCol>
                 </CRow>
+                <br />
                 <CRow>
                   <CCol xs="12" sm="4">
                     <p><strong>Name</strong></p>
