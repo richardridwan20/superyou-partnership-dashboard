@@ -44,33 +44,35 @@ export default {
         }
     },
 
-    updatePartnerById: async function(partner){
-        // console.log(partner);
+    updatePartnerById: async function(id, partner){
 
-        // var json = {
-        //     name: 'Sequis',
-        //     company_name: 'PT Asuransi Jiwa Sequis Life 222',
-        //     email: 'sequis@email.com',
-        //     commission: '0',
-        //     address: 'Jalan Jenderal Sudirman no 84',
-        //     is_active: 'true',
-        //     branch_name: '',
-        //     branch_code: '',
-        //     agent_name: '',
-        //     agent_code: '',
-        //     desktop_banner_url: '',
-        //     mobile_banner_url: '',
-        //     callback_method: 'GET',
-        //     callback_url: 'https://reqres.in/api/products/3'
-        // };
-        
-        const apiUrl = baseUrl+'/partners/fd76a03a-848e-4434-989c-17331f951095'
+        var desktop_url = partner.desktop_banner_url ? partner.desktop_banner_url : partner.banner_url.desktop;
+        var mobile_url = partner.mobile_banner_url ? partner.mobile_banner_url : partner.banner_url.mobile;
+
+        var json = {
+            name: partner.name,
+            company_name: partner.company_name,
+            email: partner.email,
+            commission: partner.commission,
+            address: partner.address,
+            is_active: partner.is_active,
+            branch_name: partner.branch_name,
+            branch_code: partner.branch_code,
+            agent_name: partner.agent_name,
+            agent_code: partner.agent_code,
+            desktop_banner_url: desktop_url,
+            mobile_banner_url: mobile_url,
+            callback_method: partner.callback_method,
+            callback_url: partner.callback_url,
+        };
+
+        const apiUrl = baseUrl+'/partners/'+id
         const token = await AuthService.getToken()
         try {
             const response = await axios({
                 url: apiUrl,
                 method: 'PUT',
-                data: partner,
+                data: json,
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
