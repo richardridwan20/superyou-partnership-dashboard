@@ -1,6 +1,5 @@
 import axios from 'axios';
 import AuthService from './AuthService';
-import Auth from '../Auth';
 
 const baseUrl = process.env.REACT_APP_PARTNERSHIP_API_URL;
 
