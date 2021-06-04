@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   CCard,
   CCardBody,
@@ -11,7 +11,8 @@ import {
   CButton,
   CForm,
   CTextarea,
-  CButtonToolbar
+  CButtonToolbar,
+  CButtonGroup
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import UserService from '../../services/UserService'
@@ -29,6 +30,10 @@ const getIsActive = is_active => {
   }
 }
 
+const buttonStyle = {
+  margin: '5px'
+}
+
 const UserDetail = ({match}) => {
   const [id, setId] = useState(match.params.id);
   const [users, setUsers] = useState([]);
@@ -39,17 +44,18 @@ const UserDetail = ({match}) => {
   const [typed, setTyped] = useState(false);
 
   //Fetch data through API using Axios in Service
-  useLayoutEffect(() => {
+  useEffect(() => {
     UserService.getUserById(id)
     .then((res) => {
       setUsers(res.user)
       setPartners(res.partner)
       setPartner(res.partner)
-      console.log(partners);
+      setUpdated(false);
     }).catch((error) => {
       setUsers({})
       setPartners({})
       setPartner({})
+      setUpdated(false);
       console.log(error)
     })
     
@@ -57,14 +63,15 @@ const UserDetail = ({match}) => {
 
   const handleSubmit = () => {
     PartnerService.updatePartnerById(partners.id,partner)
-    .then((res) => {
+    .then(() => {
       MySwal.fire({
         title: <p>Success!</p>,
         icon: 'success',
         text: 'Partner info successfully updated.'
       });
       setUpdated(true);
-      console.log(res);
+      setEdit(false);
+      setTyped(false);
     }).catch((error) => {
       MySwal.fire({
         title: <p>Error!</p>,
@@ -151,26 +158,27 @@ const UserDetail = ({match}) => {
               />
               <h3>{partners.name}</h3>
               <p>#{partners.id}</p>
+              <CButtonGroup>
+                <CButton style={buttonStyle} type="button" size="sm" color="light" onClick={ e => setEdit(true) }>
+                  <CIcon
+                    name="cil-pencil"
+                  /> Edit
+                </CButton>
+                <CButton style={buttonStyle} type="button" size="sm" color="light" onClick={ handleSubmit } disabled={!typed}>
+                  <CIcon
+                    name="cil-save"
+                  /> Save Changes
+                </CButton>
+              </CButtonGroup>
             </CCardHeader>
             <CCardBody>
               <CForm action="#" className="form-horizontal">
                 <CRow>
-                  <CCol xs="12" sm="9" className="">
+                  <CCol xs="12" sm="8" className="">
                     <p className="text-muted lead">Partner Info</p>
                   </CCol>
-                  <CCol xs="12" sm="3">
-                    <CButtonToolbar justify="between">
-                      <CButton type="button" size="sm" color="info"  onClick={ e => setEdit(true) }>
-                        <CIcon
-                          name="cil-pencil"
-                        /> Edit
-                      </CButton>
-                      <CButton type="button" size="sm" color="secondary" onClick={ handleSubmit } disabled={!typed}>
-                        <CIcon
-                          name="cil-save"
-                        /> Save Changes
-                      </CButton>
-                    </CButtonToolbar>
+                  <CCol xs="12" sm="4">
+                    
                   </CCol>
                 </CRow>
                 <br />
