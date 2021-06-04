@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useLayoutEffect} from 'react'
 import {
   CCard,
   CCardBody,
@@ -13,11 +13,18 @@ import {
   CProgress,
   CWidgetIcon,
   CCallout,
-  CBadge
+  CBadge,
+  CButton,
+  CForm,
+  CTextarea
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import UserService from '../../services/UserService'
 import PartnerService from '../../services/PartnerService'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
 
 const getIsActive = is_active => {
   switch (is_active) {
@@ -35,20 +42,49 @@ const UserDetail = ({match}) => {
   const [id, setId] = useState(match.params.id);
   const [users, setUsers] = useState([]);
   const [partners, setPartners] = useState([]);
+  const [partner, setPartner] = useState([]);
+  const [updated, setUpdated] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [typed, setTyped] = useState(false);
 
   //Fetch data through API using Axios in Service
-  useEffect(() => {
+  useLayoutEffect(() => {
     UserService.getUserById(id)
     .then((res) => {
       setUsers(res.user)
       setPartners(res.partner)
+      setPartner(res.partner)
+      console.log(partners);
     }).catch((error) => {
       setUsers({})
       setPartners({})
+      setPartner({})
       console.log(error)
     })
     
-  }, []); 
+  }, [updated]); 
+
+  const handleSubmit = () => {
+    // console.log(JSON.stringify(partner));
+    PartnerService.updatePartnerById(partner)
+    .then((res) => {
+      MySwal.fire({
+        title: <p>Success!</p>,
+        icon: 'success',
+        text: 'Partner info successfully updated.'
+      });
+      setUpdated(true);
+      console.log(res);
+    }).catch((error) => {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        icon: 'error',
+        text: 'Partner info failed to update.'
+      });
+      setUpdated(false);
+      console.log(error)
+    })
+  }
 
   return (
     <>
@@ -127,34 +163,65 @@ const UserDetail = ({match}) => {
               <p>#{partners.id}</p>
             </CCardHeader>
             <CCardBody>
+              <CForm action="#" className="form-horizontal">
                 <CRow>
-                  <CCol xs="12" sm="12">
+                  <CCol xs="12" sm="8" className="">
                     <p className="text-muted lead">Partner Info</p>
+                  </CCol>
+                  <CCol xs="12" sm="2">
+                    <CButton type="button" size="md" color="info" onClick={ e => setEdit(true) }>
+                      <CIcon
+                        name="cil-pencil"
+                      /> Edit
+                    </CButton>
+                  </CCol>
+                  <CCol xs="12" sm="2">
+                    <CButton type="button" size="md" color="info" onClick={ handleSubmit } disabled={!typed}>
+                      <CIcon
+                        name="cil-save"
+                      /> Save Changes
+                    </CButton>
                   </CCol>
                 </CRow>
                 <CRow>
                   <CCol xs="12" sm="4">
                     <p><strong>Name</strong></p>
-                    <p className="text-muted">{partners.name ? partners.name : '-'}</p>
+                    <CInput disabled={!edit} key={partners} defaultValue={partners.name ? partners.name : '-'} name="partner['name']" 
+                      onChange={(e) => {
+                        setPartner({ ...partner, name: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                   <CCol xs="12" sm="4">
                     <p><strong>Company Name</strong></p>
-                    <p className="text-muted">{partners.company_name ? partners.company_name : '-'}</p>
+                    <CInput disabled={!edit} key={partners} defaultValue={partners.company_name ? partners.company_name : '-'} name="partner['company_name']" onChange={(e) => {
+                        setPartner({ ...partner, company_name: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                   <CCol xs="12" sm="4">
                     <p><strong>Address</strong></p>
-                    <p className="text-muted">{partners.address ? partners.address : '-'}</p>
+                    <CTextarea disabled={!edit} key={partners} defaultValue={partners.address ? partners.address : '-'} name="partner['address']" onChange={(e) => {
+                        setPartner({ ...partner, address: e.target.value })
+                        setTyped(true)
+                    }}></CTextarea>
                   </CCol>
                 </CRow>
                 <br></br>
                 <CRow>
                   <CCol xs="12" sm="4">
                     <p><strong>Email</strong></p>
-                    <p className="text-muted">{partners.email ? partners.email : '-'}</p>
+                    <CInput disabled={!edit} key={partners} type="email" defaultValue={partners.email ? partners.email : '-'} name="partner['email']" onChange={(e) => {
+                        setPartner({ ...partner, email: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                   <CCol xs="12" sm="4">
                     <p><strong>Commission</strong></p>
-                    <p className="text-muted">{partners.commission ? partners.commission : '-'}</p>
+                    <CInput disabled={!edit} key={partners} defaultValue={partners.commission ? partners.commission : '-'} name="partner['commission']" onChange={(e) => {
+                        setPartner({ ...partner, commission: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                 </CRow>
                 <br></br>
@@ -169,13 +236,19 @@ const UserDetail = ({match}) => {
                   <CCol xs="12" sm="6">
                     <p><strong>Desktop Banner URL</strong></p>
                     <code>
-                        {partners.banner_url ? JSON.stringify(partners.banner_url.desktop, null, 6) : '-'}
+                      <CInput disabled={!edit} key={partners} defaultValue={partners.banner_url ? partners.banner_url.desktop : '-'} name="partner['desktop_banner_url']" onChange={(e) => {
+                        setPartner({ ...partner, desktop_banner_url: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                     </code>
                   </CCol>
                   <CCol xs="12" sm="6">
-                    <p><strong>Mobile Banner URL Code</strong></p>
+                    <p><strong>Mobile Banner URL</strong></p>
                     <code>
-                        {partners.banner_url ? JSON.stringify(partners.banner_url.mobile, null, 6) : '-'}
+                      <CInput disabled={!edit} key={partners} defaultValue={partners.banner_url ? partners.banner_url.mobile : '-'} name="partner['mobile_banner_url']" onChange={(e) => {
+                        setPartner({ ...partner, mobile_banner_url: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                     </code>
                   </CCol>
                 </CRow>
@@ -190,11 +263,17 @@ const UserDetail = ({match}) => {
                 <CRow>
                   <CCol xs="12" sm="6">
                     <p><strong>Branch Name</strong></p>
-                    <p className="text-muted">{partners.branch_name ? partners.branch_name : '-'}</p>
+                    <CInput disabled={!edit} key={partners} defaultValue={partners.branch_name ? partners.branch_name : '-'} name="partner['branch_name']" onChange={(e) => {
+                        setPartner({ ...partner, branch_name: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                   <CCol xs="12" sm="6">
                     <p><strong>Branch Code</strong></p>
-                    <p className="text-muted">{partners.branch_code ? partners.branch_code : '-'}</p>
+                    <CInput disabled={!edit} key={partners} defaultValue={partners.branch_code ? partners.branch_code : '-'} name="partner['branch_code']" onChange={(e) => {
+                        setPartner({ ...partner, branch_code: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                 </CRow>
                 <br></br>
@@ -208,11 +287,17 @@ const UserDetail = ({match}) => {
                 <CRow>
                   <CCol xs="12" sm="6">
                     <p><strong>NPK (Agent) Name</strong></p>
-                    <p className="text-muted">{partners.agent_name ? partners.agent_name : '-'}</p>
+                    <CInput disabled={!edit} key={partners} defaultValue={partners.agent_name ? partners.agent_name : '-'} name="partner['agent_name']" onChange={(e) => {
+                        setPartner({ ...partner, agent_name: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                   <CCol xs="12" sm="6">
                     <p><strong>NPK (Agent) Code</strong></p>
-                    <p className="text-muted">{partners.agent_code ? partners.agent_code : '-'}</p>
+                    <CInput disabled={!edit} key={partners} defaultValue={partners.agent_code ? partners.agent_code : '-'} name="partner['agent_code']" onChange={(e) => {
+                        setPartner({ ...partner, agent_code: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                 </CRow>
                 <br></br>
@@ -226,13 +311,20 @@ const UserDetail = ({match}) => {
                 <CRow>
                   <CCol xs="12" sm="6">
                     <p><strong>Callback Method</strong></p>
-                    <p className="text-muted">{partners.callback_method ? partners.callback_method : '-'}</p>
+                    <CInput disabled={!edit} key={partners} defaultValue={partners.callback_method ? partners.callback_method : '-'} name="partner['callback_method']" onChange={(e) => {
+                        setPartner({ ...partner, callback_method: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                   <CCol xs="12" sm="6">
                     <p><strong>Callback URL</strong></p>
-                    <p className="text-muted">{partners.callback_url ? partners.callback_url : '-'}</p>
+                    <CInput disabled={!edit} key={partners} defaultValue={partners.callback_url ? partners.callback_url : '-'} name="partner['callback_url']" onChange={(e) => {
+                        setPartner({ ...partner, callback_url: e.target.value })
+                        setTyped(true)
+                    }}></CInput>
                   </CCol>
                 </CRow>
+              </CForm>
             </CCardBody>
           </CCard>
         </CCol>
