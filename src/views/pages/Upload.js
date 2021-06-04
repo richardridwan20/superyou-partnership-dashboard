@@ -102,7 +102,7 @@ const Upload = () => {
               </CForm>
             </CCardBody>
             <CCardFooter>
-              <CButton type="submit" size="md" color="primary" onClick={handleUpload} disabled={!chosen}><CIcon name="cil-scrubber" />{chosen ? ' Submit' : ' Please choose file first.'}</CButton>
+              <CButton type="submit" size="md" color="primary" onClick={ () => handleUpload } disabled={!chosen}><CIcon name="cil-scrubber" />{chosen ? ' Submit' : ' Please choose file first.'}</CButton>
             </CCardFooter>
           </CCard>
         </CCol>
