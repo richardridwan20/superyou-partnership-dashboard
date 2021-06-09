@@ -1,5 +1,5 @@
 import axios from 'axios';
-import AuthService from './AuthService';
+import { getUser } from '../utils/Common';
 
 const baseUrl = process.env.REACT_APP_PARTNERSHIP_API_URL;
 
@@ -9,14 +9,14 @@ export default {
         const order = (query['asc']) ? 'asc' : 'desc';
         const sort = (query['column']) ? query['column'] : 'id';
         const apiUrl = baseUrl+'/partners/?page='+currentPage+'&limit='+perPage+'&order='+order+'&sort='+sort
-        const token = await AuthService.getToken()
+        const token = getUser()
         try {
             const response = await axios({
                 url: apiUrl,
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: token.user_key,
+                    Authorization: token,
                 }
             });
             return response.data
@@ -27,14 +27,14 @@ export default {
 
     getPartnerById: async function(id){
         const apiUrl = baseUrl+'/partners/'+id
-        const token = await AuthService.getToken()
+        const token = getUser()
         try {
             const response = await axios({
                 url: apiUrl,
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: token.user_key,
+                    Authorization: token,
                 }
             });
             return response.data
@@ -66,7 +66,7 @@ export default {
         };
 
         const apiUrl = baseUrl+'/partners/'+id
-        const token = await AuthService.getToken()
+        const token = getUser()
         try {
             const response = await axios({
                 url: apiUrl,
@@ -75,7 +75,7 @@ export default {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    Authorization: token.user_key,
+                    Authorization: token,
                 }
             });
             return response.data

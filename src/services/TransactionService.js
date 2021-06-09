@@ -1,6 +1,5 @@
 import axios from 'axios';
-import AuthService from './AuthService';
-import Auth from '../Auth';
+import { getUser } from '../utils/Common';
 
 const baseUrl = process.env.REACT_APP_PARTNERSHIP_API_URL;
 
@@ -10,14 +9,14 @@ export default {
         const order = (query['asc']) ? 'asc' : 'desc';
         const sort = (query['column']) ? query['column'] : 'id';
         const apiUrl = baseUrl+'/transactions/?page='+currentPage+'&limit='+perPage+'&order='+order+'&sort='+sort
-        const token = await AuthService.getToken()
+        const token = getUser()
         try {
             const response = await axios({
                 url: apiUrl,
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: token.user_key,
+                    Authorization: token,
                 }
             });
             return response.data
@@ -28,14 +27,14 @@ export default {
 
     getTransactionById: async function(id){
         const apiUrl = baseUrl+'/transactions/'+id
-        const token = await AuthService.getToken()
+        const token = getUser()
         try {
             const response = await axios({
                 url: apiUrl,
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: token.user_key,
+                    Authorization: token,
                 }
             });
             return response.data.transaction
