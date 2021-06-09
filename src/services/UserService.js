@@ -1,6 +1,5 @@
 import axios from 'axios';
-import AuthService from './AuthService';
-import Auth from '../Auth';
+import { getUser } from '../utils/Common';
 
 const baseUrl = process.env.REACT_APP_PARTNERSHIP_API_URL;
 
@@ -8,14 +7,14 @@ export default {
 
     readUsersMe: async function(){
         const apiUrl = baseUrl+'/users/me'
-        const token = await AuthService.getToken()
+        const token = getUser()
         try {
             const response = await axios({
                 url: apiUrl,
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: token.user_key,
+                    Authorization: token,
                 }
             });
             return response.data
@@ -26,14 +25,14 @@ export default {
 
     getUserById: async function(id){
         const apiUrl = baseUrl+'/users/'+id
-        const token = await AuthService.getToken()
+        const token = getUser()
         try {
             const response = await axios({
                 url: apiUrl,
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: token.user_key,
+                    Authorization: token,
                 }
             });
             const partnerUrl = baseUrl+'/partners/'+response.data.partner_id
@@ -42,7 +41,7 @@ export default {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: token.user_key,
+                    Authorization: token,
                 }
             });
             const json = [];
